@@ -1,0 +1,101 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Generated on 01/22/2023 17:42:53
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Dtwo.API.Dofus2.AnkamaGames.Network.Types;
+using Dtwo.API.Dofus2.Encoding;
+using Dtwo.API.Dofus2.Network.Messages;
+
+namespace Dtwo.API.Dofus2.AnkamaGames.Network.Messages
+{
+
+public class GuildInformationsGeneralMessage : Dofus2Message
+{
+
+public const uint Id = 1416;
+public override uint MessageId
+{
+    get { return Id; }
+}
+
+public bool abandonnedPaddock;
+        public byte level;
+        public double expLevelFloor;
+        public double experience;
+        public double expNextLevelFloor;
+        public int creationDate;
+        public uint nbTotalMembers;
+        public uint nbConnectedMembers;
+        
+
+public GuildInformationsGeneralMessage()
+{
+}
+
+public GuildInformationsGeneralMessage(bool abandonnedPaddock, byte level, double expLevelFloor, double experience, double expNextLevelFloor, int creationDate, uint nbTotalMembers, uint nbConnectedMembers)
+        {
+            this.abandonnedPaddock = abandonnedPaddock;
+            this.level = level;
+            this.expLevelFloor = expLevelFloor;
+            this.experience = experience;
+            this.expNextLevelFloor = expNextLevelFloor;
+            this.creationDate = creationDate;
+            this.nbTotalMembers = nbTotalMembers;
+            this.nbConnectedMembers = nbConnectedMembers;
+        }
+        
+
+public override void Serialize(IDataWriter writer)
+{
+
+writer.WriteBoolean(abandonnedPaddock);
+            writer.WriteByte(level);
+            writer.WriteVarLong(expLevelFloor);
+            writer.WriteVarLong(experience);
+            writer.WriteVarLong(expNextLevelFloor);
+            writer.WriteInt(creationDate);
+            writer.WriteVarShort((int)nbTotalMembers);
+            writer.WriteVarShort((int)nbConnectedMembers);
+            
+
+}
+
+public override void Deserialize(IDataReader reader)
+{
+
+abandonnedPaddock = reader.ReadBoolean();
+            level = reader.ReadByte();
+            expLevelFloor = reader.ReadVarUhLong();
+            experience = reader.ReadVarUhLong();
+            expNextLevelFloor = reader.ReadVarUhLong();
+            creationDate = reader.ReadInt();
+            nbTotalMembers = reader.ReadVarUhShort();
+            nbConnectedMembers = reader.ReadVarUhShort();
+            
+
+}
+
+
+}
+
+
+}

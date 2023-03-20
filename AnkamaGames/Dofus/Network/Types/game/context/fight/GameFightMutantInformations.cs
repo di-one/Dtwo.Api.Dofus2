@@ -1,0 +1,74 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Generated on 01/22/2023 17:43:04
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Dtwo.API.Dofus2.Encoding;
+
+namespace Dtwo.API.Dofus2.AnkamaGames.Network.Types
+{
+
+public class GameFightMutantInformations : GameFightFighterNamedInformations
+{
+
+public const short Id = 5030;
+public override short TypeId
+{
+    get { return Id; }
+}
+
+public sbyte powerLevel;
+        
+
+public GameFightMutantInformations()
+{
+}
+
+public GameFightMutantInformations(double contextualId, Types.EntityDispositionInformations disposition, Types.EntityLook look, Types.GameContextBasicSpawnInformation spawnInfo, sbyte wave, Types.GameFightCharacteristics stats, uint[] previousPositions, string name, Types.PlayerStatus status, int leagueId, int ladderPosition, bool hiddenInPrefight, sbyte powerLevel)
+         : base(contextualId, disposition, look, spawnInfo, wave, stats, previousPositions, name, status, leagueId, ladderPosition, hiddenInPrefight)
+        {
+            this.powerLevel = powerLevel;
+        }
+        
+
+public override void Serialize(IDataWriter writer)
+{
+
+base.Serialize(writer);
+            writer.WriteSbyte(powerLevel);
+            
+
+}
+
+public override void Deserialize(IDataReader reader)
+{
+
+base.Deserialize(reader);
+            powerLevel = reader.ReadSbyte();
+            
+
+}
+
+
+}
+
+
+}

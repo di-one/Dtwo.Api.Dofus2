@@ -1,0 +1,46 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Generated on 01/23/2023 12:54:03
+using System;
+using System.Collections.Generic;
+using Dtwo.API.Dofus2.Encoding;
+using Dtwo.API.Dofus2.AnkamaGames.Jerakine.Data;
+using Dtwo.API.DofusBase.Data;
+
+namespace Dtwo.API.Dofus2.AnkamaGames.Dofus.DataCenter
+{
+
+public class MapScrollAction : DofusData
+{
+
+public const String MODULE = "MapScrollActions";
+        public double id;
+        public Boolean rightExists;
+        public Boolean bottomExists;
+        public Boolean leftExists;
+        public Boolean topExists;
+        public double rightMapId;
+        public double bottomMapId;
+        public double leftMapId;
+        public double topMapId;
+        
+
+}
+
+}

@@ -1,0 +1,78 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Generated on 01/22/2023 17:42:44
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Dtwo.API.Dofus2.AnkamaGames.Network.Types;
+using Dtwo.API.Dofus2.Encoding;
+using Dtwo.API.Dofus2.Network.Messages;
+
+namespace Dtwo.API.Dofus2.AnkamaGames.Network.Messages
+{
+
+public class RefreshCharacterStatsMessage : Dofus2Message
+{
+
+public const uint Id = 3301;
+public override uint MessageId
+{
+    get { return Id; }
+}
+
+public double fighterId;
+        public Types.GameFightCharacteristics stats;
+        
+
+public RefreshCharacterStatsMessage()
+{
+}
+
+public RefreshCharacterStatsMessage(double fighterId, Types.GameFightCharacteristics stats)
+        {
+            this.fighterId = fighterId;
+            this.stats = stats;
+        }
+        
+
+public override void Serialize(IDataWriter writer)
+{
+
+writer.WriteDouble(fighterId);
+            stats.Serialize(writer);
+            
+
+}
+
+public override void Deserialize(IDataReader reader)
+{
+
+fighterId = reader.ReadDouble();
+            stats = new Types.GameFightCharacteristics();
+            stats.Deserialize(reader);
+            
+
+}
+
+
+}
+
+
+}
