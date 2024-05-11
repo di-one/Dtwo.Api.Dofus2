@@ -34,7 +34,6 @@ namespace RaidBot.Data.IO.D2O
 
         public void AddField(string fieldName, BigEndianReader reader)
         {
-            Console.WriteLine($"{ClassName} Add field : " + fieldName);
             Fields.Add(new GameDataField(fieldName, reader));
         }
 

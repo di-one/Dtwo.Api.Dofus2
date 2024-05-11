@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Dtwo.API.Dofus2.Encoding;
 using Dtwo.API.DofusBase;
 
 namespace Dtwo.API.Dofus2.Tools
@@ -11,10 +13,10 @@ namespace Dtwo.API.Dofus2.Tools
     public class MessagesIdUpdateTool
     {
         public readonly static string TempPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "temp", "MessagesIdUpdateTool");
-        public static void Parse(Action<bool> resultAction)
+        public static void Parse(Action<bool> resultAction) => Task.Factory.StartNew(() =>
         {
             InternalParse(resultAction);
-        }
+        }, TaskCreationOptions.LongRunning);
 
         private static void InternalParse(Action<bool> resultAction)
         {
@@ -29,12 +31,16 @@ namespace Dtwo.API.Dofus2.Tools
 
                 try
                 {
-                    string txt = Json.JSonSerializer<List<DofusMessageBinding>>.Serialize(bindings);
+                    string txt = Newtonsoft.Json.JsonConvert.SerializeObject(bindings);
                     File.WriteAllText(Dtwo.API.Paths.Dofus2BindingPath, txt);
                 }
                 catch (Exception ex)
                 {
+                    LogManager.LogWarning(
+                        $"{nameof(MessagesIdUpdateTool)}.{nameof(InternalParse)}",
+                        ex.Message);
                     resultAction?.Invoke(false);
+                    return;
                 }
 
                 resultAction?.Invoke(true);
@@ -52,14 +58,35 @@ namespace Dtwo.API.Dofus2.Tools
 
             Directory.CreateDirectory(TempPath);
 
-            Swf.SwfManager.ParseSfw(
+            ParseSfw(
                Dtwo.API.Paths.Config.JpexsPath,
-               Dtwo.API.Dofus2.Paths.DofusBasePath + "/DofusInvoker.swf",
+               Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Ankama", "Dofus", "DofusInvoker.swf"),
                TempPath,
                new string[] {
                     "com.ankamagames.dofus.network.messages.++"
                },
                onFinishAction);
+        }
+
+        public static void ParseSfw(string jpexsPath, string swfPath, string writeFolderPath, string[] classNames, Action<int> onFinish)
+        {
+            ProcessStartInfo startInfo = new ProcessStartInfo();
+            startInfo.FileName = jpexsPath;
+            string classes = string.Join(",", classNames);
+
+            Process process = new Process()
+            {
+                StartInfo = startInfo,
+                EnableRaisingEvents = true
+            };
+
+            process.Exited += (sender, args) =>
+            {
+                onFinish?.Invoke(process.ExitCode);
+            };
+
+            startInfo.Arguments = $"-selectclass {classes} -export script \"{writeFolderPath}\" \"{swfPath}\"";
+            process.Start();
         }
 
         private static void ForeachDirectoriesRecursive(string path, Action<string[]> filesCallback)

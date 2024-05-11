@@ -169,15 +169,15 @@ namespace Dtwo.API.Dofus2.AnkamaGames.Atouin
             int e = 0;
             List<Cell> lsCell = null;
             int numCell = 0;
-            List<BasicElement> lsElement = null;
+            List<BasicElement>? lsElement = null;
             int numElement = 0;
-            Layer layer = null;
-            Cell cell = null;
-            BasicElement element = null;
+            Layer? layer = null;
+            Cell? cell = null;
+            BasicElement? element = null;
             int elementId = 0;
-            GraphicalElementData elementData = null;
-            NormalGraphicalElementData graphicalElementData = null;
-            NormalGraphicalElementData gfx = null;
+            GraphicalElementData? elementData = null;
+            NormalGraphicalElementData? graphicalElementData = null;
+            NormalGraphicalElementData? gfx = null;
             //Elements ele = Elements.GetInstance();
             Dictionary<int, NormalGraphicalElementData> gfxList = new Dictionary<int, NormalGraphicalElementData>();
             //this._gfxCount = new Dictionary<int, int>();
@@ -204,21 +204,12 @@ namespace Dtwo.API.Dofus2.AnkamaGames.Atouin
                                 elementData = Elements.GetInstance().GetElementData(elementId);
                                 if (elementData == null)
                                 {
-                                    LogManager.LogWarning("Unknown graphical element ID " + elementId);
+                                    //LogManager.LogWarning("Unknown graphical element ID " + elementId);
                                 }
                                 else if (elementData is NormalGraphicalElementData)
                                 {
                                     graphicalElementData = elementData as NormalGraphicalElementData;
                                     gfxList[graphicalElementData.GfxId] = graphicalElementData;
-                                    //    if (this._gfxCount.ContainsKey(graphicalElementData.gfxId))
-                                    //    {
-                                    //        this._gfxCount[graphicalElementData.gfxId]++;
-                                    //    }
-                                    //    else
-                                    //    {
-                                    //        this._gfxCount[graphicalElementData.gfxId] = 1;
-                                    //    }
-                                    //}
                                 }
                             }
                         }
@@ -231,7 +222,10 @@ namespace Dtwo.API.Dofus2.AnkamaGames.Atouin
             {
                 if (pair.Value == null)
                 {
-                    LogManager.LogError("mapdata error");
+                    LogManager.LogError(
+                        $"{nameof(MapData)}.{nameof(ComputeGfxList)}",
+                        "pair.value is null");
+
                     continue;
                 }
 

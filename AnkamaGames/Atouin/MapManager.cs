@@ -57,7 +57,7 @@ namespace Dtwo.API.Dofus2.AnkamaGames.Atouin
             }
             else
             {
-                LogManager.LogWarning("map byte == null");
+                LogManager.LogWarning(nameof(LoadFromPath), "map byte == null");
             }
 
             return null;
@@ -65,8 +65,6 @@ namespace Dtwo.API.Dofus2.AnkamaGames.Atouin
 
         public static MapData LoadFromId(double id)
         {
-            LogManager.Log("Get map " + id);
-
             string str = ((id % 10).ToString() + "/" + id.ToString() + ".dlm");
 
             return LoadFromPath(str);

@@ -51,9 +51,8 @@ namespace Dtwo.API.Dofus2.Data
 
         public static void LoadTeleporters(string filePath)
         {
-            Console.WriteLine("Load Teleporters ...");
             string txt = File.ReadAllText(filePath);
-            var teleporters = Dtwo.Json.JSonSerializer<List<MapTeleporters>>.DeSerialize(txt);
+            var teleporters = Newtonsoft.Json.JsonConvert.DeserializeObject<List<MapTeleporters>>(txt);
 
             foreach (var m in teleporters)
             {

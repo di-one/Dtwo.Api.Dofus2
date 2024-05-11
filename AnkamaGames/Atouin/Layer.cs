@@ -15,20 +15,15 @@ namespace Dtwo.API.Dofus2.AnkamaGames.Atouin
         // Methods
         internal void Init(IDataReader Reader, int MapVersion)
         {
-            Console.WriteLine("Layer init 1");
             if (MapVersion >= 9)
             {
-                Console.WriteLine("Layer init 2");
                 LayerId = Reader.ReadByte();
             }
             else
             {
-                Console.WriteLine("Layer init 3");
                 LayerId = Reader.ReadInt();
             }
-            Console.WriteLine("Layer init 4");
             CellsCount = Reader.ReadShort();
-            Console.WriteLine("Layer init 5 cell count : " + CellsCount);
 
             for (int i = 0; i < CellsCount; i++)
             {
@@ -36,7 +31,6 @@ namespace Dtwo.API.Dofus2.AnkamaGames.Atouin
                 item.Init(Reader, MapVersion);
                 Cells.Add(item);
             }
-            Console.WriteLine("Layer init 6");
         }
 
         // Fields

@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using Dtwo.API.Dofus2.AnkamaGames.Atouin;
 using Dtwo.API.DofusBase.Reflection;
 
 namespace Dtwo.API.Dofus2.AnkamaGames.Jerakine.Data
@@ -11,7 +12,7 @@ namespace Dtwo.API.Dofus2.AnkamaGames.Jerakine.Data
         #endregion
 
         #region Constructeurs
-        public static void Init()
+        public static bool Init()
         {
             LogManager.Log("DataCenterTypeManager init");
             Assembly asm = Assembly.GetAssembly(typeof(DataCenterTypeManager));
@@ -27,12 +28,17 @@ namespace Dtwo.API.Dofus2.AnkamaGames.Jerakine.Data
 
                 if (ctor == null)
                 {
-                    LogManager.LogError(string.Format("'{0}' doesn't implemented a parameterless constructor", type));
-                    return;
+                    LogManager.LogError(
+                        $"{nameof(DataCenterTypeManager)}.{nameof(Init)}", 
+                        string.Format("'{0}' doesn't implemented a parameterless constructor", type));
+
+                    return false;
                 }
 
                 m_TypesConstructors.Add(type.Name, ctor.CreateDelegate<Func<object>>());
             }
+
+            return true;
         }
         #endregion
 
@@ -41,16 +47,13 @@ namespace Dtwo.API.Dofus2.AnkamaGames.Jerakine.Data
         {
             if (!m_TypesConstructors.ContainsKey(name))
             {
-                LogManager.LogWarning("Type " + name + " doesn't exist");
+                LogManager.LogWarning($"{nameof(DataCenterTypeManager)}.{nameof(GetInstance)}", "Type " + name + " doesn't exist");
                 return null;
             }
 
             var constructor = m_TypesConstructors[name]();
-            LogManager.Log($"Get instance dofus data {name}, constructor is null ? " + (constructor == null).ToString());
 
             var castedConstructor = constructor as T;
-
-            LogManager.Log("Get instance dofus data, casted_constructor is null ? " + (castedConstructor == null).ToString());
 
             return castedConstructor;
         }

@@ -31,7 +31,7 @@ namespace Dtwo.API.Dofus2.AnkamaGames.Network.Messages
 public class GameFightStartMessage : Dofus2Message
 {
 
-public const uint Id = 3034;
+public const uint Id = 1715;
 public override uint MessageId
 {
     get { return Id; }
@@ -53,11 +53,11 @@ public GameFightStartMessage(Types.Idol[] idols)
 public override void Serialize(IDataWriter writer)
 {
 
-writer.WriteShort((short)idols.Length);
-            foreach (var entry in idols)
-            {
-                 entry.Serialize(writer);
-            }
+//writer.WriteShort((short)idols.Length);
+//            foreach (var entry in idols)
+//            {
+//                 entry.Serialize(writer);
+//            }
             
 
 }
@@ -65,13 +65,13 @@ writer.WriteShort((short)idols.Length);
 public override void Deserialize(IDataReader reader)
 {
 
-var limit = (ushort)reader.ReadUShort();
-            idols = new Types.Idol[limit];
-            for (int i = 0; i < limit; i++)
-            {
-                 idols[i] = new Types.Idol();
-                 idols[i].Deserialize(reader);
-            }
+//var limit = (ushort)reader.ReadUShort();
+//            idols = new Types.Idol[limit];
+//            for (int i = 0; i < limit; i++)
+//            {
+//                 idols[i] = new Types.Idol();
+//                 idols[i].Deserialize(reader);
+//            }
             
 
 }

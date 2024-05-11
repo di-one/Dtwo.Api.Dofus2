@@ -15,6 +15,7 @@
 #endregion
 
 using Dtwo.API.Dofus2.Encoding;
+using RaidBot.Data.IO.D2O;
 
 namespace Dtwo.API.Dofus2.Network.Messages
 {
@@ -113,7 +114,9 @@ namespace Dtwo.API.Dofus2.Network.Messages
                 reader.BytesAvailable >= LengthBytesCount && !Length.HasValue)
             {
                 if (LengthBytesCount < 0 || LengthBytesCount > 3)
-                    Console.WriteLine("Malformated Message Header, invalid bytes number to read message length (inferior to 0 or superior to 3)");
+                    LogManager.LogError(
+                        $"{nameof(MessagePart)}.{nameof(Build)}",
+                        "Malformated Message Header, invalid bytes number to read message length (inferior to 0 or superior to 3)");
 
                 Length = 0;
 

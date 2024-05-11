@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Dtwo.API.Dofus2
+﻿namespace Dtwo.API.Dofus2
 {
     public class Paths
     {
@@ -38,7 +32,7 @@ namespace Dtwo.API.Dofus2
             }
             else
             {
-                Config = Json.JSonSerializer<PathsConfiguration>.DeSerialize(File.ReadAllText(ConfigPath));
+                Config = Newtonsoft.Json.JsonConvert.DeserializeObject<PathsConfiguration>(File.ReadAllText(ConfigPath));
 
                 return true;
             }
@@ -46,7 +40,7 @@ namespace Dtwo.API.Dofus2
 
         public static void SaveConfig(bool force = false)
         {
-            File.WriteAllText(ConfigPath, Json.JSonSerializer<PathsConfiguration>.Serialize(Config));
+            File.WriteAllText(ConfigPath, Newtonsoft.Json.JsonConvert.SerializeObject(Config));
             InitPaths();
 
             if (force == false)

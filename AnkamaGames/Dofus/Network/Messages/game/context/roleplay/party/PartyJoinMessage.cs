@@ -31,7 +31,7 @@ namespace Dtwo.API.Dofus2.AnkamaGames.Network.Messages
 public class PartyJoinMessage : AbstractPartyMessage
 {
 
-public const uint Id = 4151;
+public const uint Id = 8846;
 public override uint MessageId
 {
     get { return Id; }

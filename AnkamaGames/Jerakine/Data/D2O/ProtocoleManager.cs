@@ -9,6 +9,8 @@ using Dtwo.API.DofusBase.Data;
 using Dtwo.API.Dofus2.Data;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using Dtwo.API.Dofus2.AnkamaGames.Atouin;
+using Dtwo.API;
 
 namespace RaidBot.Data.IO.D2O
 {
@@ -27,12 +29,12 @@ namespace RaidBot.Data.IO.D2O
         public static DofusData GetDataClass(string name)
         {
             if (!DataClassesInitialized)
-                Ini();
+                Init();
             if (DataClasses.Any(key => key.Key == name))
                 return (DofusData)Activator.CreateInstance(DataClasses[name]);
             else
             {
-                Console.WriteLine($"Data class {name} not found");
+                LogManager.LogError($"{nameof(ProtocolManager)}.{nameof(GetDataClass)}", $"Data class {name} not found");
                 return null;
             }
         }
@@ -41,20 +43,17 @@ namespace RaidBot.Data.IO.D2O
 
         #region Private methode
 
-        private static void Ini()
+        private static void Init()
         {
-            Console.WriteLine("Init protocole manager with asm type DofusData");
             DataClasses = new Dictionary<string, Type>();
             Assembly assembly = Assembly.GetAssembly(typeof(ProtocolManager));
             foreach (Type t in assembly.GetTypes())
             {
                 if (t.IsAssignableTo(typeof(DofusData)))
                 {
-                    Console.WriteLine("Add class : " + t.ToString());
                     string className = t.ToString();
                     string[] splited = className.Split('.');
                     className = splited[splited.Length - 1];
-                    Console.WriteLine("Add class confirm : " + className);
                     DataClasses.Add(className, t);
                 }
             }

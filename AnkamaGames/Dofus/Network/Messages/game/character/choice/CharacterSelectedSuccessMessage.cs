@@ -31,7 +31,7 @@ namespace Dtwo.API.Dofus2.AnkamaGames.Network.Messages
 public class CharacterSelectedSuccessMessage : Dofus2Message
 {
 
-public const uint Id = 3893;
+public const uint Id = 2529;
 public override uint MessageId
 {
     get { return Id; }

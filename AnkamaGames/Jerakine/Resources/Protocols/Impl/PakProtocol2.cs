@@ -1,5 +1,6 @@
 ﻿using Dtwo.API.Dofus2.AnkamaGames.Jerakine.Resources.Adapters;
 using Dtwo.API.Dofus2.Encoding;
+using RaidBot.Data.IO.D2O;
 
 namespace Dtwo.API.Dofus2.AnkamaGames.Jerakine.Resources.Protocols
 {
@@ -46,8 +47,6 @@ namespace Dtwo.API.Dofus2.AnkamaGames.Jerakine.Resources.Protocols
 
         public static void LoadFolder(string path, string outPath)
         {
-            Console.WriteLine($"Load {path} d2p's");
-
             var d2pFiles = Directory.GetFiles(path);
             int filesLoaded = 0;
             int filesWrited = 0;
@@ -63,7 +62,7 @@ namespace Dtwo.API.Dofus2.AnkamaGames.Jerakine.Resources.Protocols
 
                 if (files == null)
                 {
-                    Console.WriteLine("Error: files is null " + d2pFile);
+                    LogManager.LogError($"{nameof(ProtocolManager)}.{nameof(LoadFolder)}", $"Error on load folder {d2pFile}");
                     continue;
                 }
 
@@ -82,9 +81,6 @@ namespace Dtwo.API.Dofus2.AnkamaGames.Jerakine.Resources.Protocols
 
                 filesLoaded++;
             }
-
-            Console.WriteLine("-- Loaded files : " + filesLoaded + " Writted files : " + filesWrited);
-
         }
 
         private static LoaderAdaptaterBase GetAdaptater(string fileName)
@@ -99,7 +95,7 @@ namespace Dtwo.API.Dofus2.AnkamaGames.Jerakine.Resources.Protocols
                     return new BitmapLoaderAdaptater();
             }
 
-            Console.WriteLine($"Not adapter found for {ext} extension");
+            LogManager.LogError($"{nameof(ProtocolManager)}.{nameof(GetAdaptater)}", $"Not adapter found for {ext} extension");
             return null;
         }
 
@@ -108,12 +104,9 @@ namespace Dtwo.API.Dofus2.AnkamaGames.Jerakine.Resources.Protocols
             if (File.Exists(outPath))
                 return;
 
-
             if (subPath.Contains("/"))
             {
                 string subPathFolderPath = Path.Combine(outPath, Path.GetDirectoryName(subPath));
-
-                //Console.WriteLine("______________________ " + subPathFolderPath);
 
                 if (Directory.Exists(subPathFolderPath) == false)
                 {

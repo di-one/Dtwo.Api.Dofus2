@@ -37,11 +37,11 @@ namespace Dtwo.API.Dofus2.AnkamaGames.Jerakine.Data
         #region Méthodes publiques
         public DofusData Read(string className, BigEndianReader reader)
         {
-            LogManager.Log("Read : " + className);
-
             if (m_Class == null)
             {
-                LogManager.LogError($"Unable to read the class {className} : the class is null");
+                LogManager.LogError(
+                        $"{nameof(GameDataClassDefinition)}.{nameof(Read)}", 
+                        $"Unable to read the class {className} : the class is null");
                 return null;
             }
 
@@ -50,25 +50,6 @@ namespace Dtwo.API.Dofus2.AnkamaGames.Jerakine.Data
             ConstructorInfo[] constructors = type.GetConstructors();
             ParameterInfo[] constructorParameters = constructors[0].GetParameters();
             List<object> parameters = new List<object>();
-
-            //foreach (ParameterInfo parameter in constructorParameters)
-            //{
-            //    if (parameter.Name == "gameDataFileAccessor")
-            //    {
-            //        parameters.Add(m_GameDataFileAccessor);
-            //        continue;
-            //    }
-
-            //    foreach (GameDataField field in m_Fields)
-            //    {
-
-            //        if (parameter.Name.ToLower() == field.Name.ToLower())
-            //        {
-            //            parameters.Add(field.Value);
-            //            break;
-            //        }
-            //    }
-            //}
 
             object result = constructors[0].Invoke(parameters.ToArray());
 
@@ -84,8 +65,6 @@ namespace Dtwo.API.Dofus2.AnkamaGames.Jerakine.Data
                 var field = m_Fields.Find(x => x.Name == item.Name);
                 if (field == null) continue;
 
-                Console.WriteLine($"field: {field.Name}");
-
                 var safeValue = SafeParse(field.Value, item.FieldType);
 
                 try
@@ -94,7 +73,9 @@ namespace Dtwo.API.Dofus2.AnkamaGames.Jerakine.Data
                 }
                 catch (Exception ex)
                 {
-                    LogManager.LogError(ex.ToString());
+                    LogManager.LogError(
+                        $"{nameof(GameDataClassDefinition)}.{nameof(Read)}", 
+                        ex.ToString());
                     continue;
                 }
             }
@@ -176,7 +157,9 @@ namespace Dtwo.API.Dofus2.AnkamaGames.Jerakine.Data
             }
             catch (Exception ex)
             {
-                LogManager.LogError(ex.ToString());
+                LogManager.LogError(
+                        $"{nameof(GameDataClassDefinition)}.{nameof(SafeParse)}",
+                        ex.ToString());
 
                 return null;
             }

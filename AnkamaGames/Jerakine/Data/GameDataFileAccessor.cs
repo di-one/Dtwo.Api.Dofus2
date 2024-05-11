@@ -26,7 +26,9 @@ namespace Dtwo.API.Dofus2.AnkamaGames.Jerakine.Data
         {
             if (Path.GetExtension(filePath) != ".d2o")
             {
-                LogManager.LogWarning($"file {filePath} is not a data file");
+                LogManager.LogWarning(
+                    $"{nameof(GameDataFileAccessor)}.{nameof(Init)}",
+                    $"file {filePath} is not a data file");
                 return;
             }
 
@@ -34,7 +36,9 @@ namespace Dtwo.API.Dofus2.AnkamaGames.Jerakine.Data
 
             if (!fileInfo.Exists)
             {
-                LogManager.LogError("Game data file \'" + fileInfo.Name + "\' not readable.");
+                LogManager.LogError(
+                    $"{nameof(GameDataFileAccessor)}.{nameof(Init)}",
+                    "Game data file \'" + fileInfo.Name + "\' not readable.");
                 return;
             }
 
@@ -57,11 +61,6 @@ namespace Dtwo.API.Dofus2.AnkamaGames.Jerakine.Data
                 m_GameDataProcessor = new Dictionary<string, GameDataProcess>();;
 
             string fileName = Path.GetFileNameWithoutExtension(fileInfo.Name);
-
-            if (fileName.ToLower() == "monsters")
-            {
-                Console.WriteLine("CHECK DATA : MONSTERS");
-            }
 
             BigEndianReader reader;
 
@@ -91,7 +90,9 @@ namespace Dtwo.API.Dofus2.AnkamaGames.Jerakine.Data
 
                 if (reader.ReadUTF() != "AKSF")
                 {
-                    LogManager.LogError($"Malformated game data file (AKSF) {fileName}");
+                    LogManager.LogError(
+                        $"{nameof(GameDataFileAccessor)}.{nameof(Init)}", 
+                        $"Malformated game data file (AKSF) {fileName}");
                     return;
                 }
 
@@ -107,7 +108,9 @@ namespace Dtwo.API.Dofus2.AnkamaGames.Jerakine.Data
                 if (System.Text.Encoding.UTF8.GetString(reader.ReadBytes(3)) != "D2O")
                 {
 
-                    LogManager.LogError($"Malformated game data file (D20) {fileName}");
+                    LogManager.LogError(
+                        $"{nameof(GameDataFileAccessor)}.{nameof(Init)}", 
+                        $"Malformated game data file (D20) {fileName}");
                     return;
                 }
             }
@@ -137,12 +140,6 @@ namespace Dtwo.API.Dofus2.AnkamaGames.Jerakine.Data
                 ReadClassDefinition(reader.ReadInt(), reader, classes);
 
             m_Classes.Add(fileName, classes);
-
-            if (fileName.ToLower() == "monsters")
-            {
-                Console.WriteLine("CHECK DATA : ADDCLASS");
-            }
-
 
             if (reader.BytesAvailable != 0)
                 m_GameDataProcessor.Add(fileName, new GameDataProcess(reader));
@@ -209,7 +206,9 @@ namespace Dtwo.API.Dofus2.AnkamaGames.Jerakine.Data
             }
             catch (Exception ex)
             {
-                LogManager.LogError(ex.ToString());
+                LogManager.LogError(
+                        $"{nameof(GameDataFileAccessor)}.{nameof(GetObjects)}", 
+                        ex.ToString());
                 return null;
             }
         }
@@ -225,7 +224,6 @@ namespace Dtwo.API.Dofus2.AnkamaGames.Jerakine.Data
         }
         #endregion
 
-        #region Méthodes privées
         private void ReadClassDefinition(int key, BigEndianReader reader, Dictionary<int, GameDataClassDefinition> classes)
         {
             GameDataClassDefinition gameDataClassDefinition = new GameDataClassDefinition(this, reader.ReadUTF(), reader.ReadUTF());
@@ -237,6 +235,5 @@ namespace Dtwo.API.Dofus2.AnkamaGames.Jerakine.Data
 
             classes.Add(key, gameDataClassDefinition);
         }
-        #endregion
     }
 }

@@ -36,7 +36,7 @@ namespace Dtwo.API.Dofus2.AnkamaGames.Atouin
 
         public bool failed => this._failed;
 
-        public GraphicalElementData GetElementData(int elementId)
+        public GraphicalElementData? GetElementData(int elementId)
         {
             if (this._elementsMap.ContainsKey(elementId))
             {
@@ -59,17 +59,14 @@ namespace Dtwo.API.Dofus2.AnkamaGames.Atouin
             int gfxCount = 0;
             uint gfxId = 0;
 
-            Console.WriteLine("FromRaw 1");
-
             try
             {
                 header = raw.ReadByte();
                 if (header != 69)
                 {
-                    throw new Exception("Unknown file format");
+                    LogManager.LogError($"{nameof(Elements)}.{FromRaw}", "Unknown file header " + header);
+                    return;
                 }
-
-                Console.WriteLine("FromRaw 2");
 
                 this._rawData = raw;
                 this.fileVersion = raw.ReadByte();
@@ -78,8 +75,6 @@ namespace Dtwo.API.Dofus2.AnkamaGames.Atouin
                 this._elementsMap = new Dictionary<int, GraphicalElementData>();
                 this._elementsIndex = new Dictionary<int, int>();
                 skypLen = 0;
-
-                Console.WriteLine("FromRaw 3 " + elementsCount + " file version " + fileVersion);
 
                 for (i = 0; i < this.elementsCount; i++)
                 {
@@ -95,8 +90,6 @@ namespace Dtwo.API.Dofus2.AnkamaGames.Atouin
                     }
                     else
                     {
-
-                        Console.WriteLine("Add elemIndex");
                         this._elementsIndex[edId] = (int)raw.Position;
                         raw.BaseStream.Position += skypLen - 4;
                     }
@@ -115,16 +108,13 @@ namespace Dtwo.API.Dofus2.AnkamaGames.Atouin
             }
             catch (Exception e)
             {
-                Console.WriteLine("error : " + e.Message);
                 _failed = true;
-                throw e;
+                LogManager.LogError($"{nameof(Elements)}.{nameof(FromRaw)}", "Error while reading elements file : " + e.Message);
             }
         }
 
-        private GraphicalElementData ReadElement(int edId)
+        private GraphicalElementData? ReadElement(int edId)
         {
-            Console.WriteLine("ReadElement " + edId);
-
             this._rawData.BaseStream.Position = this._elementsIndex[edId];
             int edType = this._rawData.ReadByte();
             GraphicalElementData ed;
@@ -149,7 +139,8 @@ namespace Dtwo.API.Dofus2.AnkamaGames.Atouin
                     ed = new BlendedGraphicalElementData(edId, edType);
                     break;
                 default:
-                    throw new Exception("Unknown element type " + edType);
+                    LogManager.LogError($"{nameof(Elements)}.{nameof(ReadElement)}", "Unknown graphical element type " + edType);
+                    return null;
             }
 
             ed.FromRaw(this._rawData, this.fileVersion);

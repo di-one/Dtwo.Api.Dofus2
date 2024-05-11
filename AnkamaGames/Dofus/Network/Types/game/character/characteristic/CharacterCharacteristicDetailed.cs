@@ -29,7 +29,7 @@ namespace Dtwo.API.Dofus2.AnkamaGames.Network.Types
 public class CharacterCharacteristicDetailed : CharacterCharacteristic
 {
 
-public const short Id = 3932;
+public const short Id = 2881;
 public override short TypeId
 {
     get { return Id; }

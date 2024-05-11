@@ -88,7 +88,9 @@ namespace Dtwo.API.Dofus2.AnkamaGames.Jerakine.Data
                     if (methodID > 0)
                         return ReadObject;
 
-                    LogManager.LogError("Unknown type \'" + methodID + "\'.");
+                    LogManager.LogError(
+                        $"{nameof(GameDataField)}.{nameof(GetReadMethod)}", 
+                        "Unknown type \'" + methodID + "\'.");
                     return null;
             }
         }

@@ -35,7 +35,7 @@ namespace Dtwo.API.Dofus2.AnkamaGames.Atouin
             }
             catch(Exception ex)
             {
-                Console.WriteLine("Init normal graphical element error " + ex.Message);
+                LogManager.LogError($"{nameof(NormalGraphicalElementData)}.{nameof(FromRaw)}", ex.Message);
             }
         }
 

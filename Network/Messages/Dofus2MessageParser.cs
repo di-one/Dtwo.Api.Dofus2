@@ -1,5 +1,6 @@
 ﻿using Dtwo.API.Dofus2.Encoding;
 using Dtwo.API.DofusBase.Network.Messages;
+using System.Diagnostics;
 
 namespace Dtwo.API.Dofus2.Network.Messages
 {
@@ -75,7 +76,7 @@ namespace Dtwo.API.Dofus2.Network.Messages
                     return;
                 }
 
-                OnGetMessage?.Invoke(message.MessageId.ToString(), message);
+                OnGetMessage?.Invoke(part.MessageId.ToString(), message);
 
                 if (!message.Cancel)
                 {

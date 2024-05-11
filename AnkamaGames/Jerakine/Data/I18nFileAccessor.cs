@@ -14,7 +14,7 @@ namespace Dtwo.API.Dofus2.AnkamaGames.Jerakine.Data
         #endregion
 
         #region Public methods
-        public bool Init(string filePath, Action<int, int> progress = null)
+        public bool Init(string filePath, Action<int, int>? progress = null)
         {
             FileInfo fileInfo = new FileInfo(filePath);
 

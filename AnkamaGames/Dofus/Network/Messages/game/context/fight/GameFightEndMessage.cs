@@ -31,7 +31,7 @@ namespace Dtwo.API.Dofus2.AnkamaGames.Network.Messages
 public class GameFightEndMessage : Dofus2Message
 {
 
-public const uint Id = 9654;
+public const uint Id = 9470;
 public override uint MessageId
 {
     get { return Id; }
