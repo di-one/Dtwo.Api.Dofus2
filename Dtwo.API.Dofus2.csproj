@@ -12,6 +12,10 @@
     <TargetFramework Condition="'$(BUILD_FOR_WINDOWS)' != 'true'">net8.0</TargetFramework>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <NoWarn>$(NoWarn);CS8618</NoWarn>
+  </PropertyGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\Dtwo.API.DofusBase\Dtwo.API.DofusBase.csproj" />
     <ProjectReference Include="..\Dtwo.API\Dtwo.API.csproj" />
